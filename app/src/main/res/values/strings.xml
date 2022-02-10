@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">AlefTest Work</string>
+    <string name="app_name">Alef Test Work</string>
+    <string name="photo_text">Фото</string>
 </resources>

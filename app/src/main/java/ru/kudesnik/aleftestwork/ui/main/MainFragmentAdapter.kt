@@ -1,0 +1,51 @@
+package ru.kudesnik.aleftestwork.ui.main
+
+import android.annotation.SuppressLint
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
+import ru.kudesnik.aleftestwork.R
+import ru.kudesnik.aleftestwork.databinding.MainFragmentRecyclerItemBinding
+
+class MainFragmentAdapter(private val itemClickListener: MainFragment.OnItemViewClickListener) :
+    RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
+    private var imageData: List<String> = listOf()
+
+    private lateinit var binding: MainFragmentRecyclerItemBinding
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setData(data: List<String>) {
+        imageData = data
+        notifyDataSetChanged()
+    }
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): MainViewHolder {
+        binding = MainFragmentRecyclerItemBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+        return MainViewHolder(binding.root)
+    }
+
+    override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
+        holder.bind(imageData[position])
+    }
+
+    override fun getItemCount() = imageData.size
+
+    inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        fun bind(data: String) = with(binding) {
+            imageViewRecyclerItem.load(data) {
+                crossfade(true)
+                placeholder(R.drawable.no_poster)
+            }
+            root.setOnClickListener {
+                itemClickListener.onItemViewClick(data)
+            }
+        }
+    }
+}
