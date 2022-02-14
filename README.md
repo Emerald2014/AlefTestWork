@@ -5,6 +5,6 @@
 
 Архитектура - MVVM
 
-В приложении используется: Retrofot, Coil, Coroutines
+В приложении используется: Retrofit, Coil, Coroutines
 
 Собранный APK - https://disk.yandex.ru/d/IkfL6toG-cYfAg
