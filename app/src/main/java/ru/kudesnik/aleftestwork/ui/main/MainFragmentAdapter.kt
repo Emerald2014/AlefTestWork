@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
+import coil.load
+import coil.size.Precision
+import coil.size.Scale
 import ru.kudesnik.aleftestwork.R
 import ru.kudesnik.aleftestwork.databinding.MainFragmentRecyclerItemBinding
 
@@ -39,9 +41,13 @@ class MainFragmentAdapter(private val itemClickListener: MainFragment.OnItemView
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(data: String) = with(binding) {
+
             imageViewRecyclerItem.load(data) {
+                precision(Precision.EXACT)
                 crossfade(true)
+                error(R.drawable.no_image)
                 placeholder(R.drawable.no_poster)
+                scale(Scale.FILL)
             }
             root.setOnClickListener {
                 itemClickListener.onItemViewClick(data)

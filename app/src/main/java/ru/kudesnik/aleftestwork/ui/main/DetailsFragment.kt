@@ -1,14 +1,12 @@
 package ru.kudesnik.aleftestwork.ui.main
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import coil.api.load
-import ru.kudesnik.aleftestwork.R
+import androidx.fragment.app.Fragment
+import coil.load
 import ru.kudesnik.aleftestwork.databinding.FragmentDetailsBinding
-import ru.kudesnik.aleftestwork.databinding.MainFragmentBinding
 
 class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null

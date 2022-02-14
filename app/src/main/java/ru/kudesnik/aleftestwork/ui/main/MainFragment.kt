@@ -9,11 +9,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import kotlinx.coroutines.*
 import ru.kudesnik.aleftestwork.R
 import ru.kudesnik.aleftestwork.databinding.MainFragmentBinding
 import ru.kudesnik.aleftestwork.model.AppState
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), CoroutineScope by MainScope() {
     private val viewModel: MainViewModel by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
@@ -52,48 +53,48 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            mainSwipe.setOnRefreshListener {
-                swipeSetColor()
-                viewModel.getData()
-                mainSwipe.isRefreshing = false
+
+  viewModel.getData()
+                mainFragmentRecyclerView.layoutManager =
+                    GridLayoutManager(requireContext(), getScreenOrientation())
+                viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it) })
+                mainSwipe.setOnRefreshListener {
+                    swipeSetColor()
+                    viewModel.getData()
+                    mainSwipe.isRefreshing = false
+                }
             }
-
-            mainFragmentRecyclerView.layoutManager =
-                GridLayoutManager(requireContext(), getScreenOrientation())
-            viewModel.getData()
-            viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it) })
         }
-    }
 
-    private fun getScreenOrientation(): Int {
-        return when (resources.configuration.orientation) {
-            Configuration.ORIENTATION_PORTRAIT -> 2
-            Configuration.ORIENTATION_LANDSCAPE -> 3
-            else -> 1
+        private fun getScreenOrientation(): Int {
+            return when (resources.configuration.orientation) {
+                Configuration.ORIENTATION_PORTRAIT -> 2
+                Configuration.ORIENTATION_LANDSCAPE -> 3
+                else -> 1
+            }
         }
-    }
 
-    private fun swipeSetColor() = with(binding) {
-        mainSwipe.setColorSchemeResources(
-            android.R.color.holo_blue_bright,
-            android.R.color.holo_green_light,
-            android.R.color.holo_orange_light,
-            android.R.color.holo_red_light
-        )
-    }
+        private fun swipeSetColor() = with(binding) {
+            mainSwipe.setColorSchemeResources(
+                android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light
+            )
+        }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+        override fun onDestroyView() {
+            super.onDestroyView()
+            _binding = null
+        }
 
-    private fun renderData(appState: AppState) = with(binding) {
-        when (appState) {
-            is AppState.Success -> {
-                progressBar.visibility = View.GONE
-                mainFragmentRecyclerView.visibility = View.VISIBLE
-                adapter.setData(appState.modelData)
-                mainFragmentRecyclerView.adapter = adapter
+        private fun renderData(appState: AppState) = with(binding) {
+            when (appState) {
+                is AppState.Success -> {
+                    progressBar.visibility = View.GONE
+                    mainFragmentRecyclerView.visibility = View.VISIBLE
+                    adapter.setData(appState.modelData)
+                    mainFragmentRecyclerView.adapter = adapter
 
 /*                adapter = MainFragmentAdapter(object : OnItemViewClickListener {
                     override fun onItemViewClick(data: String) {
@@ -110,20 +111,20 @@ class MainFragment : Fragment() {
                         }
                     }
                 })*/
-            }
-            is AppState.Loading -> {
-                progressBar.visibility = View.VISIBLE
-                mainFragmentRecyclerView.visibility = View.GONE
+                }
+                is AppState.Loading -> {
+                    progressBar.visibility = View.VISIBLE
+                    mainFragmentRecyclerView.visibility = View.GONE
+                }
             }
         }
-    }
 
 
-    interface OnItemViewClickListener {
-        fun onItemViewClick(data: String)
-    }
+        interface OnItemViewClickListener {
+            fun onItemViewClick(data: String)
+        }
 
-    companion object {
-        fun newInstance() = MainFragment()
+        companion object {
+            fun newInstance() = MainFragment()
+        }
     }
-}

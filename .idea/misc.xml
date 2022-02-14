@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/YandexDisk/AndroidStudy/AlefTestWork/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.127" />
         <entry key="..\:/YandexDisk/AndroidStudy/AlefTestWork/app/src/main/res/layout/fragment_details.xml" value="0.259375" />
+        <entry key="..\:/YandexDisk/AndroidStudy/AlefTestWork/app/src/main/res/layout/main_activity.xml" value="0.11614583333333334" />
         <entry key="..\:/YandexDisk/AndroidStudy/AlefTestWork/app/src/main/res/layout/main_fragment.xml" value="0.1" />
         <entry key="..\:/YandexDisk/AndroidStudy/AlefTestWork/app/src/main/res/layout/main_fragment_recycler_item.xml" value="0.1" />
       </map>
